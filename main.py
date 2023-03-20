@@ -1,12 +1,18 @@
 import itertools
 import random
+import os
+
+from terminaltables import SingleTable
 
 
 class GameBoard:
+
     def __init__(self, size=4):
         self.grid_size = size
-        self.grid = [[0 for _ in range(self.grid_size)] for _ in range(self.grid_size)]
-        for i, j in itertools.product(range(self.grid_size), range(self.grid_size)):
+        self.grid = [[0 for _ in range(self.grid_size)]
+                     for _ in range(self.grid_size)]
+        for i, j in itertools.product(range(self.grid_size),
+                                      range(self.grid_size)):
             self.grid[i][j] = 0
         self.add_random_cell()
         self.add_random_cell()
@@ -20,19 +26,18 @@ class GameBoard:
         self.grid[i][j] = 2
 
     def print_grid(self):
-        for i in range(self.grid_size):
-            for j in range(self.grid_size):
-                print(self.grid[i][j], end="\t")
-            print("")
+        table = SingleTable(self.grid)
+        table.inner_row_border = True
+        print("\n" + table.table)
 
     def move(self, direction):
-        if direction == "D":
+        if direction == "S":
             self.move_down()
-        elif direction == "U":
+        elif direction == "W":
             self.move_up()
-        elif direction == "R":
+        elif direction == "D":
             self.move_right()
-        elif direction == "L":
+        elif direction == "A":
             self.move_left()
         else:
             print("Invalid Move!!! Try again...")
@@ -45,7 +50,9 @@ class GameBoard:
                     self.grid[i][j] *= 2
                     self.grid[i][j + 1] = 0
             self.grid[i] = [j for j in self.grid[i] if j != 0]
-            self.grid[i] += [0 for _ in range(self.grid_size - len(self.grid[i]))]
+            self.grid[i] += [
+                0 for _ in range(self.grid_size - len(self.grid[i]))
+            ]
 
     def move_right(self):
         for i in range(self.grid_size):
@@ -55,7 +62,9 @@ class GameBoard:
                     self.grid[i][j] *= 2
                     self.grid[i][j - 1] = 0
             self.grid[i] = [j for j in self.grid[i] if j != 0]
-            self.grid[i] = [0 for _ in range(self.grid_size - len(self.grid[i]))] + self.grid[i]
+            self.grid[i] = [
+                0 for _ in range(self.grid_size - len(self.grid[i]))
+            ] + self.grid[i]
 
     def move_up(self):
         self.grid = list(map(list, zip(*self.grid)))
@@ -68,34 +77,49 @@ class GameBoard:
         self.grid = list(map(list, zip(*self.grid)))
 
     def game_over(self):
-        for i, j in itertools.product(range(self.grid_size), range(self.grid_size - 1)):
+        for i, j in itertools.product(range(self.grid_size),
+                                      range(self.grid_size - 1)):
             if self.grid[i][j] in [0, self.grid[i][j + 1]]:
                 return False
         return all(
             self.grid[i][j] != self.grid[i + 1][j]
-            for i, j in itertools.product(range(self.grid_size - 1), range(self.grid_size))
-        )
+            for i, j in itertools.product(range(self.grid_size -
+                                                1), range(self.grid_size)))
 
 
 if __name__ == '__main__':
+    print('-' * 40)
     print("""
-----------------------------------------    
     ██████   ██████  ██   ██  █████  
          ██ ██  ████ ██   ██ ██   ██ 
      █████  ██ ██ ██ ███████  █████  
     ██      ████  ██      ██ ██   ██ 
     ███████  ██████       ██  █████  
-----------------------------------------
     """)
+    print('[CONTROLS]'.center(40, '-'))
+    print("""
+    W - Up
+    S - Down
+    D - Right
+    A - Left
+    X - Quit
+    """)
+    print('-' * 40)
+
+    # ToDo: Logic to choose grid size
+
+    SIZE = 4
+    BLENGTH = (SIZE * 4) + 1
+
     gb = GameBoard(4)
     while not gb.game_over():
         gb.print_grid()
-        direction = input("Move:").upper()
+        direction = input("\n" + "Your move:".rjust(BLENGTH)).upper()
 
         if direction == "X":
-            print("Bye Bye!!!")
+            print("\n" + " Bye Bye!!! ".center(BLENGTH, "=") + "\n")
             break
-        else:
-            gb.move(direction)
 
+        gb.move(direction)
         gb.add_random_cell()
+        os.system('cls' if os.name == 'nt' else 'clear')
