@@ -104,14 +104,16 @@ if __name__ == '__main__':
     A - Left
     X - Quit
     """)
-    print('-' * 40)
+    print('[PRESS ENTER TO START]'.center(40, '-'))
 
     # ToDo: Logic to choose grid size
-
     SIZE = 4
     BLENGTH = (SIZE * 4) + 1
 
-    gb = GameBoard(4)
+    _ = input()
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+    gb = GameBoard(SIZE)
     while not gb.game_over():
         gb.print_grid()
         direction = input("\n" + "Your move:".rjust(BLENGTH)).upper()
