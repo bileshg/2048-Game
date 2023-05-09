@@ -491,6 +491,17 @@ dev = ["pytest (>=7.0.1)", "pytest-timeout (>=2.1.0)", "build (>=0.7.0)", "pre-c
 doc = ["pytoolconfig", "sphinx (>=4.5.0)", "sphinx-autodoc-typehints (>=1.18.1)", "sphinx-rtd-theme (>=1.0.0)"]
 
 [[package]]
+name = "termcolor"
+version = "2.2.0"
+description = "ANSI color formatting for output in terminal"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+tests = ["pytest", "pytest-cov"]
+
+[[package]]
 name = "terminaltables"
 version = "3.1.10"
 description = "Generate simple tables in terminals from a nested list of strings."
@@ -588,7 +599,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.10.0,<3.11"
-content-hash = "c28e22aa92383f35e83fbbae22b1bd49cd75f73027bd01077141bc9e1d764dc4"
+content-hash = "559f8a79330ccc89b0b6d12912089b9677a7f934afe38dd5f042c2eb2468e70f"
 
 [metadata.files]
 aiohttp = []
@@ -630,6 +641,7 @@ replit = []
 replit-python-lsp-server = []
 requests = []
 rope = []
+termcolor = []
 terminaltables = []
 toml = []
 tomli = []

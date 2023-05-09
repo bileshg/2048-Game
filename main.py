@@ -3,6 +3,7 @@ import random
 import os
 
 from terminaltables import SingleTable
+from termcolor import colored
 
 
 class GameBoard:
@@ -26,7 +27,28 @@ class GameBoard:
         self.grid[i][j] = 2
 
     def print_grid(self):
-        table = SingleTable(self.grid)
+        grid_to_print = []
+        for i in range(self.grid_size):
+            grid_row = []
+            for j in range(self.grid_size):
+                value = self.grid[i][j]
+                if value == 2:
+                    grid_row.append(colored(self.grid[i][j], 'blue'))
+                elif value == 4:
+                    grid_row.append(colored(self.grid[i][j], 'cyan'))
+                elif value == 8:
+                    grid_row.append(colored(self.grid[i][j], 'green'))
+                elif value == 16 or value == 32:
+                    grid_row.append(colored(self.grid[i][j], 'yellow'))
+                elif value == 64 or value == 128:
+                    grid_row.append(colored(self.grid[i][j], 'red'))
+                elif value > 128:
+                    grid_row.append(colored(self.grid[i][j], 'magenta'))
+                else:
+                    grid_row.append(self.grid[i][j])
+            grid_to_print.append(grid_row)
+
+        table = SingleTable(grid_to_print)
         table.inner_row_border = True
         print("\n" + table.table)
 
