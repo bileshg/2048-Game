@@ -26,6 +26,10 @@ class GameBoard:
             j = random.randint(0, self.grid_size - 1)
         self.grid[i][j] = 2
 
+    def _colored_cell(self, i, j, color):
+        cell_value = str(self.grid[i][j])
+        return colored(cell_value, color)
+
     def print_grid(self):
         grid_to_print = []
         for i in range(self.grid_size):
@@ -33,17 +37,17 @@ class GameBoard:
             for j in range(self.grid_size):
                 value = self.grid[i][j]
                 if value == 2:
-                    grid_row.append(colored(self.grid[i][j], 'blue'))
+                    grid_row.append(self._colored_cell(i, j, 'blue'))
                 elif value == 4:
-                    grid_row.append(colored(self.grid[i][j], 'cyan'))
+                    grid_row.append(self._colored_cell(i, j, 'cyan'))
                 elif value == 8:
-                    grid_row.append(colored(self.grid[i][j], 'green'))
-                elif value == 16 or value == 32:
-                    grid_row.append(colored(self.grid[i][j], 'yellow'))
-                elif value == 64 or value == 128:
-                    grid_row.append(colored(self.grid[i][j], 'red'))
+                    grid_row.append(self._colored_cell(i, j, 'green'))
+                elif value in [16, 32]:
+                    grid_row.append(self._colored_cell(i, j, 'yellow'))
+                elif value in [64, 128]:
+                    grid_row.append(self._colored_cell(i, j, 'red'))
                 elif value > 128:
-                    grid_row.append(colored(self.grid[i][j], 'magenta'))
+                    grid_row.append(self._colored_cell(i, j, 'magenta'))
                 else:
                     grid_row.append(self.grid[i][j])
             grid_to_print.append(grid_row)
@@ -52,14 +56,14 @@ class GameBoard:
         table.inner_row_border = True
         print("\n" + table.table)
 
-    def move(self, direction):
-        if direction == "S":
+    def move(self, key):
+        if key == "S":
             self.move_down()
-        elif direction == "W":
+        elif key == "W":
             self.move_up()
-        elif direction == "D":
+        elif key == "D":
             self.move_right()
-        elif direction == "A":
+        elif key == "A":
             self.move_left()
         else:
             print("Invalid Move!!! Try again...")
